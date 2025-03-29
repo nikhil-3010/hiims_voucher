@@ -31,26 +31,28 @@ if (!$order_by) {
 
 //Get DB instance. i.e instance of MYSQLiDB Library
 $db = getDbInstance();
-$select = array('id', 'f_name', 'l_name', 'gender', 'phone', 'created_at', 'updated_at');
+$select = array('id', 'voucher_photo', 'voucher_para_pic', 'expiry_date', 'created_at');
+
 
 //Start building query according to input parameters.
 // If search string
-if ($search_string) {
-	$db->where('f_name', '%' . $search_string . '%', 'like');
-	$db->orwhere('l_name', '%' . $search_string . '%', 'like');
-}
+// if ($search_string) {
+// 	$db->where('f_name', '%' . $search_string . '%', 'like');
+// 	$db->orwhere('l_name', '%' . $search_string . '%', 'like');
+// }
 
-//If order by option selected
-if ($order_by) {
-	$db->orderBy($filter_col, $order_by);
-}
+// //If order by option selected
+// if ($order_by) {
+// 	$db->orderBy($filter_col, $order_by);
+// }
 
-// Set pagination limit
-$db->pageLimit = $pagelimit;
+// // Set pagination limit
+// $db->pageLimit = $pagelimit;
 
-// Get result of the query.
-$rows = $db->arraybuilder()->paginate('customers', $page, $select);
-$total_pages = $db->totalPages;
+// // Get result of the query.
+// $rows = $db->arraybuilder()->paginate('customers', $page, $select);
+// $total_pages = $db->totalPages;
+$rows = $db->arraybuilder()->get('customer_vouchers', null, $select);
 
 include BASE_PATH . '/includes/header.php';
 ?>
@@ -110,19 +112,20 @@ if ($order_by == 'Desc') {
         <thead>
             <tr>
                 <th width="5%">ID</th>
-                <th width="45%">Name</th>
-                <th width="20%">Gender</th>
-                <th width="20%">Phone</th>
+                <th width="45%">voucher photo</th>
+                <th width="20%">voucher para pic</th>
+                <th width="20%">expiry_date</th>
                 <th width="10%">Actions</th>
             </tr>
         </thead>
         <tbody>
             <?php foreach ($rows as $row): ?>
+
             <tr>
                 <td><?php echo $row['id']; ?></td>
-                <td><?php echo xss_clean($row['f_name'] . ' ' . $row['l_name']); ?></td>
-                <td><?php echo xss_clean($row['gender']); ?></td>
-                <td><?php echo xss_clean($row['phone']); ?></td>
+                <td><?php echo xss_clean($row['voucher_photo'] ); ?></td>
+                <td><?php echo xss_clean($row['voucher_para_pic']); ?></td>
+                <td><?php echo xss_clean($row['expiry_date']); ?></td>
                 <td>
                     <a href="edit_customer.php?customer_id=<?php echo $row['id']; ?>&operation=edit" class="btn btn-primary"><i class="glyphicon glyphicon-edit"></i></a>
                     <a href="#" class="btn btn-danger delete_btn" data-toggle="modal" data-target="#confirm-delete-<?php echo $row['id']; ?>"><i class="glyphicon glyphicon-trash"></i></a>

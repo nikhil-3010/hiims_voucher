@@ -46,4 +46,25 @@ try {
 } catch (Exception $e) {
     echo json_encode(['success' => false, 'message' => 'Error: ' . $e->getMessage()]);
 }
+
+
+
+//db_photo
+$voucher_pic = isset($_POST['voucher_pic']) ? trim($_POST['voucher_pic']) : '';
+$para_pic = isset($_POST['para_pic']) ? trim($_POST['para_pic']) : '';
+
+if (empty($voucher_pic) || empty($para_pic) ) {
+    echo json_encode(['success' => false, 'message' => 'All fields are required.']);
+    exit;
+}
+
+
+try {
+    $db = getDbInstance(); // Make sure your config file defines this function properly
+
+} catch (Exception $e) {
+    // Handle the exception
+    echo 'Caught exception: ', $e->getMessage();
+}
+
 ?>
