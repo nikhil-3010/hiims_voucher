@@ -1,6 +1,6 @@
 <?php
 session_start();
-$phoneNumber = $_SESSION['phoneNumber'];
+$phoneNumber = isset($_SESSION['phoneNumber']);
 require_once './config/config.php';  
 
 $db = getDbInstance();
@@ -10,6 +10,8 @@ $customer = $db->getOne('user_info', ['name']); // Only fetch the 'name' column
 
 if ($customer) {
     $customerName = $customer['name'];
+}else{
+    $customerName = " ";
 } 
 
 $numCustomers = $db->get("customer_vouchers");
@@ -61,8 +63,9 @@ $numCustomers = $db->get("customer_vouchers");
         <div class="container-fluid">
             <div class="voucher-list text-center pt-5">
                 <img src="" id="selectedVoucherImage"  alt="video-consult" class="video-vouch img-fluid pb-3"> 
+                <h3 class="text-center pt-3">788457</h3>
                 <div class="expirt-date">
-                    <p>Expiry Date: 01 Apr 2025</p>
+                    <p id="exp_date">Expiry Date: </p>
                 </div>
                 <button class="btn btn-lang my-2" id="redeemBtn">Redeem</button>
                 <button class="btn btn-lang-outline my-2" id="goBackBtn">Go Back</button>
@@ -81,7 +84,8 @@ $numCustomers = $db->get("customer_vouchers");
                         $voucherName = $customer['id'];
                         $voucherImage = $customer['voucher_photo'];
                         $voucherParaImage = $customer['voucher_para_pic'];
-                        echo '<li data-voucher-image="'.$voucherParaImage.'"><a href="#"><img src="./assets/images/'.$voucherImage.'" alt="'.$voucherName.'" class="img-fluid"></a></li>';
+                        $voucherexpirydate = $customer['expiry_date'];
+                        echo '<li data-voucher-image="'.$voucherParaImage.'" data-voucher-expiry="'.$voucherexpirydate.'"><a href="#"><img src="./assets/images/'.$voucherImage.'" alt="'.$voucherName.'" class="img-fluid"></a></li>';
                     }
                     ?>
                 </ul>
@@ -95,14 +99,23 @@ $numCustomers = $db->get("customer_vouchers");
    <script>
         $(document).ready(function(){
             $('.second-section').hide();
+            var selectedVoucherID = null;
             // When a voucher is clicked
             $('.voucher-list ul li').click(function(e) {
                 e.preventDefault();
                 
                 var voucherImage = $(this).data('voucher-image');
+                var voucherExpiry = $(this).data('voucher-expiry');
+
+                selectedVoucherID = $(this).find('a img').attr('alt');
+
+                var formattedDate = new Date(voucherExpiry);
+                var options = { day: 'numeric', month: 'long', year: 'numeric' };
+                var formattedExpiry = formattedDate.toLocaleDateString('en-US', options);
                 
                 // Set the image in the second section
                 $('#selectedVoucherImage').attr('src', './assets/images/' + voucherImage);
+                $('#exp_date').text('Expiry Date: ' + formattedExpiry);
                 
                 // Hide the first section and show the second section
                 $('.first-section').fadeOut(500, function() {
@@ -119,12 +132,24 @@ $numCustomers = $db->get("customer_vouchers");
             });
 
             $('#redeemBtn').click(function() {
+                if (!selectedVoucherID) {
+                    alert('No voucher selected!');
+                    return;
+                }
+
                 $.ajax({
                     url: 'redeem_voucher.php',
                     method: 'POST',
-                    data: formData,
-                    success: function(response){}
-                })
+                    data: { voucherID: selectedVoucherID },
+                    success: function(response){
+                        var result = JSON.parse(response);
+                        if (result.success) {
+                            alert('Redeem Code Generated: ' + result.redeem_code);
+                        } else {
+                            alert(result.message);
+                        }
+                    }
+                });
             });
         });
     </script>
