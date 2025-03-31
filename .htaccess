@@ -1,0 +1,15 @@
+RewriteEngine On
+
+# Redirect 'index' to '/'
+RewriteRule ^index/?$ / [R=301,L]
+
+# Check if the requested filename is not a file
+RewriteCond %{REQUEST_FILENAME} !-f
+
+# Rewrite rule to append .php for non-file requests
+RewriteRule ^([^\.]+)$ $1.php [NC,L]
+
+<FilesMatch "\.(mp4|webm|jpg|jpeg|png|gif|css|js)$">
+    Header set Cache-Control "max-age=31536000, public"
+</FilesMatch>
+

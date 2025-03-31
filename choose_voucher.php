@@ -1,18 +1,21 @@
 <?php
 session_start();
-$phoneNumber = isset($_SESSION['phoneNumber']);
+if (isset($_SESSION['phoneNumber'])) {
+$phoneNumber = $_SESSION['phoneNumber'];
 require_once './config/config.php';  
 
 $db = getDbInstance();
 
 $db->where('phone', $phoneNumber);
 $customer = $db->getOne('user_info', ['name']); // Only fetch the 'name' column
+$customerName = "";
 
 if ($customer) {
     $customerName = $customer['name'];
 }else{
-    $customerName = " ";
-} 
+    header('Location: index.php');
+    exit();
+}
 
 $numCustomers = $db->get("customer_vouchers");
 
@@ -55,6 +58,134 @@ $numCustomers = $db->get("customer_vouchers");
             font-size: 16px;
             background: transparent;
         }
+        @media (max-width: 375px) {
+    h3{
+        position: absolute;
+        top: 59%;
+        left: 0;
+        right: 0;
+        text-align: center;
+    }
+    img#selectedVoucherImage {
+        position: relative;
+    }
+    .expirt-date {
+        position: absolute;
+        top: 68%;
+        left: 0;
+        right: 0;
+        color: lightgrey;
+    }
+}
+@media (max-width: 430px) {
+    img#selectedVoucherImage {
+        position: relative;
+    }
+    h3{
+        position: absolute;
+        top: 43%;
+        left: 0;
+        right: 0;
+    }
+    .expirt-date {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        color: lightgrey;
+    }
+}
+@media (max-width: 414px) {
+    h3{
+        position: absolute;
+        top: 45%;
+        right: 0;
+        left: 0;
+    }
+    img#selectedVoucherImage {
+        position: relative;
+    }
+    .expirt-date {
+        position: absolute;
+        top: 52%;
+        left: 0;
+        right: 0;
+        color: lightgrey;
+    }
+}
+@media (max-width: 412px) {
+    img#selectedVoucherImage {
+        position: relative;
+    }
+    h3 {
+        position: absolute;
+        top: 44%;
+        left: 0;
+        right: 0;
+    }
+    .expirt-date {
+        position: absolute;
+        top: 51%;
+        left: 0;
+        right: 0;
+        color: lightgrey;
+    }
+}
+@media (max-width: 390px) {
+    img#selectedVoucherImage {
+        position: relative;
+    }
+    h3 {
+        position: absolute;
+        top: 48%;
+        right: 0;
+        left: 0;
+    }
+    .expirt-date {
+        position: absolute;
+        top: 55%;
+        left: 0;
+        right: 0;
+        color: lightgrey;
+    }
+}
+@media (max-width: 375px) {
+    h3{
+        position: absolute;
+        top: 59%;
+        left: 0;
+        right: 0;
+        text-align: center;
+    }
+    img#selectedVoucherImage {
+        position: relative;
+    }
+    .expirt-date {
+        position: absolute;
+        top: 68%;
+        left: 0;
+        right: 0;
+        color: lightgrey;
+    }
+}
+@media (max-width: 360px) {
+    img#selectedVoucherImage {
+        position: relative;
+    }
+    h3 {
+        position: absolute;
+        top: 51%;
+        left: 0;
+        right: 0;
+    }
+    .expirt-date {
+        position: absolute;
+        top: 59%;
+        left: 0;
+        right: 0;
+        color: lightgrey;
+    }
+}
     </style>
 </head>
 <body>
@@ -63,7 +194,7 @@ $numCustomers = $db->get("customer_vouchers");
         <div class="container-fluid">
             <div class="voucher-list text-center pt-5">
                 <img src="" id="selectedVoucherImage"  alt="video-consult" class="video-vouch img-fluid pb-3"> 
-                <h3 class="text-center pt-3">788457</h3>
+                <h3 class="text-center pt-3" style="color:#3c854f;">788457</h3>
                 <div class="expirt-date">
                     <p id="exp_date">Expiry Date: </p>
                 </div>
@@ -76,7 +207,7 @@ $numCustomers = $db->get("customer_vouchers");
    <section class="d-md-none d-block ">
     <div class="choose-voucher-area first-section">
         <div class="container-fluid">
-            <h3 class="text-center pt-3">Choose Your Voucher <?php echo $customerName?></h3>
+            <h2 class="text-center pt-3" style="color:lightgrey;">Choose Your Voucher <?php echo $customerName?></h2>
             <div class="voucher-list text-center">
                 <ul>
                     <?php
@@ -86,6 +217,9 @@ $numCustomers = $db->get("customer_vouchers");
                         $voucherParaImage = $customer['voucher_para_pic'];
                         $voucherexpirydate = $customer['expiry_date'];
                         echo '<li data-voucher-image="'.$voucherParaImage.'" data-voucher-expiry="'.$voucherexpirydate.'"><a href="#"><img src="./assets/images/'.$voucherImage.'" alt="'.$voucherName.'" class="img-fluid"></a></li>';
+                    }}else{
+                        header('Location: index.php');
+                        exit();
                     }
                     ?>
                 </ul>
