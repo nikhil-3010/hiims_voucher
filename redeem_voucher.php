@@ -1,7 +1,8 @@
 <?php
 session_start();
 //first check phone number is in seesion if not then signup and if it is avail but not in session then login
-$phoneNumber = isset($_SESSION['phoneNumber']);
+if (isset($_SESSION['phoneNumber'])) {
+$phoneNumber = $_SESSION['phoneNumber'];}
 require_once './config/config.php';  
 
 if($_SERVER['REQUEST_METHOD'] == 'POST'){

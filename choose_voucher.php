@@ -7,11 +7,15 @@ require_once './config/config.php';
 $db = getDbInstance();
 
 $db->where('phone', $phoneNumber);
-$customer = $db->getOne('user_info', ['name']); // Only fetch the 'name' column
+$customer = $db->getOne('user_info', ['name','voucher_id','vouchers_code']); // Only fetch the 'name' column
 $customerName = "";
+$vouchercode = "";
 
 if ($customer) {
     $customerName = $customer['name'];
+    $vouchercode = $customer['vouchers_code'];
+    $voucherid = $customer['voucher_id'];
+
 }else{
     header('Location: index.php');
     exit();
@@ -193,8 +197,9 @@ $numCustomers = $db->get("customer_vouchers");
     <div class="choose-voucher-area second-section">
         <div class="container-fluid">
             <div class="voucher-list text-center pt-5">
-                <img src="" id="selectedVoucherImage"  alt="video-consult" class="video-vouch img-fluid pb-3"> 
-                <h3 class="text-center pt-3" style="color:#3c854f;">788457</h3>
+                <img src="" id="selectedVoucherImage"  alt="" class="video-vouch img-fluid pb-3"> 
+                <h3 class="text-center pt-3" style="color:#3c854f;">
+                    <?php echo $vouchercode?></h3>
                 <div class="expirt-date">
                     <p id="exp_date">Expiry Date: </p>
                 </div>
@@ -216,7 +221,8 @@ $numCustomers = $db->get("customer_vouchers");
                         $voucherImage = $customer['voucher_photo'];
                         $voucherParaImage = $customer['voucher_para_pic'];
                         $voucherexpirydate = $customer['expiry_date'];
-                        echo '<li data-voucher-image="'.$voucherParaImage.'" data-voucher-expiry="'.$voucherexpirydate.'"><a href="#"><img src="./assets/images/'.$voucherImage.'" alt="'.$voucherName.'" class="img-fluid"></a></li>';
+                        echo '<li data-voucher-image="'.$voucherParaImage.'" data-voucher-expiry="'.$voucherexpirydate.'"
+                        data-voucher-id="'.$voucherName.'"><a href="#"><img src="./assets/images/'.$voucherImage.'" alt="'.$voucherName.'" class="img-fluid"></a></li>';
                     }}else{
                         header('Location: index.php');
                         exit();
@@ -240,6 +246,7 @@ $numCustomers = $db->get("customer_vouchers");
                 
                 var voucherImage = $(this).data('voucher-image');
                 var voucherExpiry = $(this).data('voucher-expiry');
+                var voucherName = $(this).data('voucher-id');
 
                 selectedVoucherID = $(this).find('a img').attr('alt');
 
@@ -249,6 +256,7 @@ $numCustomers = $db->get("customer_vouchers");
                 
                 // Set the image in the second section
                 $('#selectedVoucherImage').attr('src', './assets/images/' + voucherImage);
+                $('#selectedVoucherImage').attr('alt',  voucherName);
                 $('#exp_date').text('Expiry Date: ' + formattedExpiry);
                 
                 // Hide the first section and show the second section
@@ -278,6 +286,7 @@ $numCustomers = $db->get("customer_vouchers");
                     success: function(response){
                         var result = JSON.parse(response);
                         if (result.success) {
+                            
                             alert('Redeem Code Generated: ' + result.redeem_code);
                         } else {
                             alert(result.message);
