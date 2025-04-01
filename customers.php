@@ -96,26 +96,30 @@ include BASE_PATH . '/includes/header.php';
         <tbody>
             <?php foreach ($rows as $row): ?>
 
-            <tr>
-                <td><?php echo $row['id']; ?></td>
-                <td><?php echo xss_clean($row['voucher_photo']); ?></td>
-                <td><?php echo xss_clean($row['voucher_para_pic']); ?></td>
+                <tr>
+    <td><?php echo $row['id']; ?></td>
+    <td><?php echo xss_clean($row['voucher_photo']); ?></td>
+    <td><?php echo xss_clean($row['voucher_para_pic']); ?></td>
 
-                <!-- Display QR Code Image -->
-                <td>
-                    <img src="<?php echo $row['qr_code']; ?>" alt="QR Code" width="100" height="100">
-                </td>
+    <!-- Display QR Code Image -->
+    <td>
+        <img id="qr-code-<?php echo $row['id']; ?>" src="<?php echo $row['qr_code']; ?>" alt="QR Code" width="100" height="100">
+        <br>
+        <button class="btn btn-success mt-2" onclick="printQRCode('<?php echo $row['id']; ?>')">
+            <i class="glyphicon glyphicon-print"></i> Print QR
+        </button>
+    </td>
 
-                <td><?php echo xss_clean($row['expiry_date']); ?></td>
-                <td>
-                    <a href="edit_customer.php?customer_id=<?php echo $row['id']; ?>&operation=edit" class="btn btn-primary">
-                        <i class="glyphicon glyphicon-edit"></i>
-                    </a>
-                    <a href="#" class="btn btn-danger delete_btn" data-toggle="modal" data-target="#confirm-delete-<?php echo $row['id']; ?>">
-                        <i class="glyphicon glyphicon-trash"></i>
-                    </a>
-                </td>
-            </tr>
+    <td><?php echo xss_clean($row['expiry_date']); ?></td>
+    <td>
+        <a href="edit_customer.php?customer_id=<?php echo $row['id']; ?>&operation=edit" class="btn btn-primary">
+            <i class="glyphicon glyphicon-edit"></i>
+        </a>
+        <a href="#" class="btn btn-danger delete_btn" data-toggle="modal" data-target="#confirm-delete-<?php echo $row['id']; ?>">
+            <i class="glyphicon glyphicon-trash"></i>
+        </a>
+    </td>
+</tr>
 
             <!-- Delete Confirmation Modal -->
             <div class="modal fade" id="confirm-delete-<?php echo $row['id']; ?>" role="dialog">
@@ -149,5 +153,16 @@ include BASE_PATH . '/includes/header.php';
     </div>
     <!-- //Pagination -->
 </div>
+<script>
+function printQRCode(id) {
+    var qrCode = document.getElementById("qr-code-" + id).src;
+    var newWindow = window.open('', '', 'width=300,height=300');
+    newWindow.document.write('<html><head><title>Print QR Code</title></head><body>');
+    newWindow.document.write('<img src="' + qrCode + '" width="200" height="200">');
+    newWindow.document.write('<script>window.onload = function() { window.print(); window.close(); }<\/script>');
+    newWindow.document.write('</body></html>');
+    newWindow.document.close();
+}
+</script>
 <!-- //Main container -->
 <?php include BASE_PATH . '/includes/footer.php'; ?>
