@@ -1,3 +1,4 @@
 ./config
 .phpintel
 .idea
+/vendor/
