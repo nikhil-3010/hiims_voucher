@@ -1,7 +1,22 @@
 <?php
+require_once './config/config.php';  // This should contain your database connection and MysqliDb setup
 
 session_start();
-$phoneNumber = $_SESSION['phoneNumber'];
+if (isset($_SESSION['phoneNumber'])) {
+    $phoneNumber = $_SESSION['phoneNumber'];
+
+    $db = getDbInstance(); // Make sure your config file defines this function properly
+    
+    $db->where('phone', $phoneNumber);
+    $existingUser = $db->getOne('user_info', ['name', 'email', 'pincode']);
+
+    if (!$existingUser) {
+        $existingUser = ['name' => 'Enter Name', 'email' => 'Enter Email', 'pincode' => 'Enter Pincode']; // Initialize as empty if not found
+    }
+}else{
+    header('Location: index.php');
+    exit();
+}
 
 ?>
 
@@ -32,21 +47,25 @@ $phoneNumber = $_SESSION['phoneNumber'];
                         <form id="info-form">
                             <div class="mb-3">
                                 <label for="exampleInputEmail1" class="form-label">Name</label>
-                                <input type="name" class="form-control" name="name" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter name">
+                                <input type="name" class="form-control" name="name" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="<?php echo htmlspecialchars($existingUser['name']); ?>"
+                                value="<?php echo isset($existingUser['name']) ? htmlspecialchars($existingUser['name']) : ''; ?>">
+                                
                               </div>
                               <div class="mb-3">
                                 <label for="exampleInputEmail1" class="form-label">Phone Number</label>
-                                <input type="telephone" class="form-control" name="phone" id="exampleInputEmail2" aria-describedby="emailHelp" placeholder="<?php echo $phoneNumber?>" value="<?php echo $phoneNumber?>"
+                                <input type="telephone" class="form-control" name="phone" id="exampleInputEmail2" aria-describedby="emailHelp" placeholder="<?php echo isset($phoneNumber) ? $phoneNumber : 'Enter Phone Number'?>" value="<?php echo isset($phoneNumber) ? $phoneNumber : ''?>"
                                  readonly>
                               </div>
                               <div id="responseMessage" style="color: red; text-align: center;"></div>
                               <div class="mb-3">
                                 <label for="exampleInputEmail1" class="form-label">Email</label>
-                                <input type="email" class="form-control" name="email" id="exampleInputEmail3" aria-describedby="emailHelp" placeholder="Enter Email">
+                                <input type="email" class="form-control" name="email" id="exampleInputEmail3" aria-describedby="emailHelp" placeholder="<?php echo htmlspecialchars($existingUser['email']); ?>"
+                                value="<?php echo htmlspecialchars($existingUser['email']); ?>">
                               </div>
                               <div class="mb-3">
                                 <label for="exampleInputEmail1" class="form-label">Pin code</label>
-                                <input type="number" class="form-control" name="pincode" id="exampleInputEmail4" aria-describedby="emailHelp" placeholder="Enter Pin code" min="000001" max="999999">
+                                <input type="number" class="form-control" name="pincode" id="exampleInputEmail4" aria-describedby="emailHelp" placeholder="<?php echo htmlspecialchars($existingUser['pincode']); ?>"
+                                value="<?php echo htmlspecialchars($existingUser['pincode']); ?>" min="000001" max="999999">
                               </div>
                             <button type="submit" class="btn btn-custom voucher w-100">Get Your Voucher</button>
                         </form>

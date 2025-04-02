@@ -149,7 +149,7 @@ include BASE_PATH . '/includes/header.php';
 
     <!-- Pagination -->
     <div class="text-center">
-        <?php echo paginationLinks($page, $total_pages, 'customers.php'); ?>
+        
     </div>
     <!-- //Pagination -->
 </div>

@@ -22,7 +22,7 @@ try {
     $existingUser = $db->getOne('user_info');
 
     if ($existingUser) {
-        echo json_encode(['success' => false, 'message' => 'Phone number already exists.']);
+        echo json_encode(['success' => true, 'message' => 'Phone number already exists.']);
         exit;
     }
 
