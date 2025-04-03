@@ -34,6 +34,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
 
+    
+
     // Prepare data for database insertion
     $db = getDbInstance();
     $data_to_store = array_filter($_POST);

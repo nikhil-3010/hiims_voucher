@@ -5,7 +5,7 @@ session_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $phoneNumber = $_POST['phoneNumber'];
-
+    
     // Validate phone number
     if (strlen($phoneNumber) !== 10 || !ctype_digit($phoneNumber)) {
         echo json_encode([
@@ -17,6 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Generate a random 4-digit OTP
     $otp = rand(1000, 9999);
+    
     $_SESSION['otp'] = $otp;
     $_SESSION['phoneNumber'] = $phoneNumber;
 

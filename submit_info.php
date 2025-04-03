@@ -10,7 +10,7 @@ $pincode = isset($_POST['pincode']) ? trim($_POST['pincode']) : '';
 
 
 // Validate input (Simple validation, you can enhance it)
-if (empty($name) || empty($phone) || empty($email) || empty($pincode)) {
+if (empty($name) || empty($phone) ) {
     echo json_encode(['success' => false, 'message' => 'All fields are required.']);
     exit;
 }
@@ -43,8 +43,10 @@ try {
     } else {
         echo json_encode(['success' => false, 'message' => 'Failed to save information.']);
     }
+    exit;
 } catch (Exception $e) {
     echo json_encode(['success' => false, 'message' => 'Error: ' . $e->getMessage()]);
+    exit;
 }
 
 
