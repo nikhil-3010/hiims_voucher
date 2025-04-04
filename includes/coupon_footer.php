@@ -4,11 +4,22 @@
  function setLanguage(lang) {
    
             sessionStorage.setItem('language', lang);
-            $('#language-selection').hide();
-            $('#phone-number-section').show();
+            $('#language-selection').fadeOut(500, function() {
+                    // $('#voucher-section').fadeIn(500);
+                    $('#phone-number-section').fadeIn(500);
+                });
+           
+            // $('#phone-number-section').show();
         }
                
         $(document).ready(function () {
+            if(sessionStorage.getItem('language') && sessionStorage.getItem('phoneNumber') ) {
+            $('#language-selection').fadeOut(500, function() {
+                $('#voucher-section').fadeIn(500);
+            });
+            loadVouchers();
+        }
+
             $('#otpForm').on('submit', function (e) {
                 e.preventDefault();
                 const phoneNumber = $('#phoneNumber').val().trim();
@@ -26,8 +37,10 @@
                     
                     success: function (res) { 
                         if (res.success) {
-                            $('#phone-number-section').hide();
-                            $('#otp-section').show();
+                        $('#phone-number-section').fadeOut(500, function() {
+                        $('#otp-section').fadeIn(500);
+                        });
+                            
                             
                         } else {
                             $('#responseMessage').html('<div class="alert alert-danger">' + res.message + '</div>');
@@ -43,7 +56,7 @@
                 });
 
                 if (otp.length !== 4) {
-                    alert('Please enter a valid 4-digit OTP.');
+                    $('#responseMessage').html('<div class="alert alert-danger">' + 'Please enter a valid 4-digit OTP.' + '</div>');
                     return;
                 }
 
@@ -66,15 +79,17 @@
                             $('#infopincode').val(userInfo.pincode);
                             $('#infophone').val(sessionStorage.getItem('phoneNumber'));
 
-                            $('#otp-section').hide();
-                            $('#form-section').show();
+                            
+                            $('#otp-section').fadeOut(500, function() {
+                        $('#form-section').fadeIn(500);
+                        });
                         }else {
             $('#responseMessage').text('User data not found. Please try again.');
         }
                     }
                 });
                             } else {
-                                alert(res.message);
+                                $('#responseMessage').html('<div class="alert alert-danger">' + res.message + '</div>');
                             }
                         
                     }
@@ -101,7 +116,8 @@
                     })
                 });
 
-                function loadVouchers() {
+        
+function loadVouchers() {
     $.ajax({
         url: 'choose_voucher.php',
         method: 'POST',
@@ -111,31 +127,41 @@
 
                 if (res.success) {
                     const voucherInfo = res.data;
-                    const customerName = voucherInfo.customerName;
+                    const customer = voucherInfo.customerName;
                     const vouchers = voucherInfo.voucherList;
+                    const redeemCode = voucherInfo.redeemCode;
 
-                    $('#voucher-title').text('Choose Your Voucher ' + customerName);
+                    $('#voucher-title').text('Choose Your Voucher ' + customer.name);
 
                     let voucherHTML = '';
                     vouchers.forEach(voucher => {
+
+                        const hasRedeemCode = redeemCode && voucher.voucher_id == redeemCode.coupon_id; 
+
+
                         voucherHTML += `
                             <li data-voucher-image="${voucher.voucher_para_image}" 
-                                data-voucher-id="${voucher.voucher_id}">
-                                <a href="#">
-                                    <img src="./assets/images/${voucher.voucher_image}" 
-                                         alt="${voucher.voucher_id}" 
-                                         class="img-fluid">
-                                </a>
-                            </li>
+                            data-voucher-id="${voucher.voucher_id}"
+                            data-expiry-date="${hasRedeemCode ? redeemCode.expiry_date : ''}"
+                            data-voucher-code="${hasRedeemCode ? redeemCode.coupon_code : ''}"
+                            data-cust-id="${customer.id}">
+                            <a href="#">
+                                <img src="./assets/images/${voucher.voucher_image}" 
+                                    alt="${voucher.voucher_id}" 
+                                    class="img-fluid">
+                            </a>
+                        </li>
                         `;
                     });
 
                     $('#voucher-list').html(voucherHTML);
 
-                    $('#form-section').hide();
-                    $('#voucher-section').show();
+                    $('#form-section').fadeOut(500, function() {
+                        $('#voucher-section').fadeIn(500);
+                        });
+                    
                 } else {
-                    alert(res.message);
+                    $('#responseMessage').html('<div class="alert alert-danger">' + res.message + '</div>');
                 }
             } catch (error) {
                 console.error('Error parsing JSON from choose_voucher.php:', error);
@@ -149,55 +175,77 @@
 
             var selectedVoucherID = null;
             // When a voucher is clicked
-            $('.voucher-list ul li').click(function(e) {
+            $('#voucher-list').on('click', 'li', function(e) {
                 e.preventDefault();
-                
                 var voucherImage = $(this).data('voucher-image');
-                var voucherExpiry = $(this).data('voucher-expiry');
-                var voucherName = $(this).data('voucher-id');
+                var vouchercode = $(this).data('voucher-code');
+                var voucheredate = $(this).data('expiry-date');
+                var c_id = $(this).data('cust-id');
+
 
                 selectedVoucherID = $(this).find('a img').attr('alt');
+                selectedCustomerID = c_id;
+                              
 
-                var formattedDate = new Date(voucherExpiry);
+                var formattedDate = new Date(voucheredate);
                 var options = { day: 'numeric', month: 'long', year: 'numeric' };
                 var formattedExpiry = formattedDate.toLocaleDateString('en-US', options);
                 
                 // Set the image in the second section
                 $('#selectedVoucherImage').attr('src', './assets/images/' + voucherImage);
-                $('#selectedVoucherImage').attr('alt',  voucherName);
-                $('#exp_date').text('Expiry Date: ' + formattedExpiry);
+                $('#selectedVoucherImage').attr('alt',  selectedVoucherID);
+                if(vouchercode !== ''){
+                    $('#redid').val(vouchercode);
+                    $('#exp_date').text('Expiry Date: ' + formattedExpiry);
+                    $('#redeemBtn').hide();
+                }
+                
                 
                 // Hide the first section and show the second section
-                $('.first-section').fadeOut(500, function() {
-                    $('.second-section').fadeIn(500);
+                $('#voucher-section').fadeOut(500, function() {
+                    $('#choose-voucher-section').fadeIn(500);
                 });
             });
 
             // Go back button functionality
             $('#goBackBtn').click(function() {
                 // Show the first section and hide the second section
-                $('.second-section').fadeOut(500, function() {
-                    $('.first-section').fadeIn(500);
+                $('#choose-voucher-section').fadeOut(500, function() {
+                    $('#voucher-section').fadeIn(500);
                 });
             });
 
-            $('#redeemBtn').click(function() {
+
+            $('#redeemBtn').click(function(e) {
+                e.preventDefault();
                 if (!selectedVoucherID) {
                     alert('No voucher selected!');
+                    return;
+                }
+
+                var enteredCode = $('#redid').val().trim();
+
+                if (!enteredCode) {
+                    alert('Please enter a coupon code!');
                     return;
                 }
 
                 $.ajax({
                     url: 'redeem_voucher.php',
                     method: 'POST',
-                    data: { voucherID: selectedVoucherID },
+                    data: { 
+                        voucherID: selectedVoucherID,
+                        enteredCode: enteredCode , 
+                        customerID: selectedCustomerID
+                     },
                     success: function(response){
                         var result = JSON.parse(response);
                         if (result.success) {
-                            
-                            alert('Redeem Code Generated: ' + result.redeem_code);
+                            $('#responseMessage').html('<span style="color: green;">' + result.message + '</span>');
+                            $('#exp_date').text('Expiry Date: ' + result.expiry_date);
                         } else {
-                            alert(result.message);
+                            $('#responseMessage').html('<span style="color: red;">' + result.message + '</span>');
+                            
                         }
                     }
                 });

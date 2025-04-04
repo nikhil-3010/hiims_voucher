@@ -12,16 +12,17 @@ $db = getDbInstance();
 
 // Fetch user information
 $db->where('phone', $phoneNumber);
-$customer = $db->getOne('user_info', ['name', 'voucher_id', 'vouchers_code']); 
+$customer = $db->getOne('user_info', ['id','name', 'vouchers_code']); 
 
 if (!$customer) {
     echo json_encode(['success' => false, 'message' => 'No customer found with this phone number.']);
     exit;
 }
 
-$customerName = $customer['name'];
-$voucherId = $customer['voucher_id'];
-$vouchersCode = $customer['vouchers_code'];
+$code = $customer['vouchers_code'];
+
+$redeemcode = $db->where('coupon_code', $code)->getOne('coupen_codes', 
+['coupon_id','customer_id','coupon_code','expiry_date']);
 
 // Fetch available vouchers
 $vouchers = $db->get("customer_vouchers");
@@ -38,9 +39,10 @@ foreach ($vouchers as $voucher) {
 echo json_encode([
     'success' => true,
     'data' => [
-        'customerName' => $customerName,
-        'vouchersCode' => $vouchersCode,
-        'voucherList' => $voucherList
+        'customerName' => $customer,
+        // 'vouchersCode' => $vouchersCode,
+        'voucherList' => $voucherList,
+        'redeemCode' => $redeemcode,
     ]
 ]);
 exit;

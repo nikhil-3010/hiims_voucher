@@ -186,9 +186,9 @@ include BASE_PATH.'/includes/coupon_header.php';
 
 
    <section class="d-md-none" id="voucher-section" style="display:none;">
-    <div class="choose-voucher-area first-section">
+    <div class="choose-voucher-area ">
         <div class="container-fluid">
-            <h2 class="text-center pt-3" style="color:lightgrey;"></h2>
+            <h2 class="text-center pt-3" style="color:lightgrey;" id="voucher-title"></h2>
             <div class="voucher-list text-center">
                 <ul id="voucher-list">
                    
@@ -200,17 +200,19 @@ include BASE_PATH.'/includes/coupon_header.php';
     
    <section class="d-md-none" id="choose-voucher-section" style="display:none;">
     <div class="choose-voucher-area second-section">
-        <div class="container-fluid">
+        <form class="container-fluid">
             <div class="voucher-list text-center pt-5">
                 <img src="" id="selectedVoucherImage"  alt=""  class="video-vouch img-fluid pb-3"> 
-                <h3 class="text-center pt-3" style="color:#3c854f;"></h3>
+                <input  class="hthree text-center pt-3" style="color:#3c854f;" type="text" name="redeemid" id="redid" placeholder="Enter Coupon Code"/>
                 <div class="expirt-date">
-                    <p id="exp_date">Expiry Date: </p>
+                    <p id="exp_date"></p>
                 </div>
                 <button class="btn btn-lang my-2" id="redeemBtn">Redeem</button>
+                <div id="responseMessage" style="color: red; text-align: center;"></div>
+                
                 <button class="btn btn-lang-outline my-2" id="goBackBtn">Go Back</button>
             </div>
-        </div>
+</form>
     </div>
    </section>
 
