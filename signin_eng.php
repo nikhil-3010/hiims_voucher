@@ -1,54 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Jeena Sikho Form</title>
-    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"> -->
-    <style>
-.content-box{background-color: #0000;filter: blur(2px);}      
-.content-box .content-body{background-color: #0B6C4B;border-top-left-radius: 30px;border-top-right-radius: 30px;color: white;height: 600px;}
-.content-box .content-body form .form-control{border-radius: 30px;background-color: #3C896F;}
-.content-box .content-body form .form-control::placeholder{color: white;}
-.content-box .content-body form button.voucher{background-color: white;width: 100%;max-width: 280px;margin: 0 auto;display: flex;align-items: center;justify-content: center;border-radius: 30px;color: #0B6C4B;font-weight: 500;}
-.splash-area{position: fixed;bottom: 0;background-color: #0B6C4B;width: 100%;border-top-left-radius: 30px;border-top-right-radius: 30px;}
-.splash-area-otp{position: fixed;bottom: 0;background-color: white;width: 100%;border-top-left-radius: 30px;border-top-right-radius: 30px;}
-.splash-content{align-items: center;margin: 0 auto;}
-.btn-lang {
-            background-color: white;
-            color: #0b5935;
-            font-weight: bold;
-            border-radius: 30px;
-            padding: 10px 20px;
-            width: 100%;
-            max-width: 260px;
-            border: none;
-            text-align: center;
-            font-size: 16px;
-        }
-        .otp-text{color: #717171;font-size: 18px;}
-        .otp-input {
-            width: 60px;
-            height: 54px;
-            text-align: center;
-            font-size: 24px;
-            border: 2px solid #ccc;
-            border-radius: 26px;
-            outline: none;
-            background: transparent;
-            color: black;
-        }
-        .otp-input:focus {
-            border-color: #0b5935;
-            outline: none;
-        }
-        .sign-in-text{color: white;}
-        .logo-area{display: flex;margin: 0 auto;align-items: center;justify-content: center;text-align: center;margin-top: 40%;}
-         form .form-control{border-radius: 30px;background-color: #3C896F;}
-        form .form-control::placeholder{color: white;}
-        .form-label{color: white;}
-    </style>
-</head>
+
 <body>
     <section class="d-md-none d-block" id="firstform">
         <div class="logo-area">
@@ -68,7 +18,7 @@
                         <input type="telephone" class="form-control" name="phoneNumber"  id="phoneNumber" aria-describedby="emailHelp" placeholder="Enter Phone Number" minlength="10" maxlength="10" required>
                       </div>
                       <div class="button-area text-center mt-3">
-                          <button type="submit" class="btn btn-lang my-2" >Get OTP</button>
+                          <button type="submit" class="btn btns-lang my-2" >Get OTP</button>
                         </div>
                     </form>
 
@@ -124,103 +74,13 @@
                     </div>
                 </div>
                 <div class="button-area mt-3">
-                    <button class="btn btn-lang my-2" id="verifyOtpBtn">Verify</button>
+                    <button class="btn btns-lang my-2" id="verifyOtpBtn">Verify</button>
                 </div>
             </div>
         </div>
     </section>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('#otpForm').on('submit', function(e) {
-                e.preventDefault();
-
-                const phoneNumber = $('#phoneNumber').val().trim();
-                if (phoneNumber.length !== 10) {
-                    alert('Please enter a valid 10-digit phone number.');
-                    return;
-                }
-
-
-                $.ajax({
-                    url: 'request_otp.php',
-                    method: 'POST',
-                    data: { phoneNumber: phoneNumber },
-                    success: function(response) {
-        try {
-            const res = typeof response === "string" ? JSON.parse(response) : response;
-            if (res.success) {
-                $('#otpSection').show();
-                $('#firstform').hide();
-                // $('#responseMessage').html('<span style="color: green;">' + res.message + ' (For testing: ' + res.otp + ')</span>');
-            } else {
-                $('#responseMessage').html('<span style="color: red;">' + res.message + '</span>');
-            }
-        } catch (error) {
-            console.error("Error parsing response:", error);
-            $('#responseMessage').html('<span style="color: red;">Invalid response from server.</span>');
-        }
-    }
-                });
-            });
-
-            $('#verifyOtpBtn').on('click', function() {
-                let otp = '';
-                $('.otp-input').each(function() {
-                    otp += $(this).val();
-                });
-                
-                $.ajax({
-                    url: 'verify_otp.php',
-                    method: 'POST',
-                    data: { otp: otp },
-                    success: function(response) {
-            try {
-                const res = typeof response === "string" ? JSON.parse(response) : response;
-                if (res.success) {
-                    $('#responseMessage').html('<div class="alert alert-success">' + res.message + '</div>');
-                    window.location.href = 'info_form.php';
-                } else {
-                    $('#responseMessage').html('<div class="alert alert-danger">' + res.message + '</div>');
-                }
-            } catch (error) {
-                console.error("Error parsing response:", error);
-                $('#responseMessage').html('<div class="alert alert-danger">Invalid response from server.</div>');
-            }
-        }
-                });
-            });
-        });
-    </script>
-    <script>
-        const phoneNumberInput = document.getElementById("phoneNumber");
-        const otpSection = document.getElementById("otpSection");
-
-        // Allow only numbers in phone input
-        phoneNumberInput.addEventListener("input", function (e) {
-            this.value = this.value.replace(/\D/g, ""); // Remove non-digit characters
-        });
-
-        document.querySelectorAll('.otp-input').forEach((input, index, inputs) => {
-        input.addEventListener('input', function (e) {
-        if (this.value.length === 1) {
-        if (index < inputs.length - 1) {
-        inputs[index + 1].focus(); // Move to the next input
-        }
-        }
-        });
-
-        input.addEventListener('keydown', function (e) {
-        if (e.key === "Backspace" && this.value === '') {
-        if (index > 0) {
-        inputs[index - 1].focus(); // Move to the previous input
-        }
-        }
-        });
-        });
-
-    </script>
+   
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

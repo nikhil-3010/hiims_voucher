@@ -1,38 +1,56 @@
 <?php
 session_start();
-//first check phone number is in seesion if not then signup and if it is avail but not in session then login
-if (isset($_SESSION['phoneNumber'])) {
-$phoneNumber = $_SESSION['phoneNumber'];}
+
 require_once './config/config.php';  
 
-if($_SERVER['REQUEST_METHOD'] == 'POST'){
-    $phoneNumber = $_SESSION['phoneNumber'];
-    $voucherId = $_POST['voucherID'];
-    $db = getDbInstance();
+$customerID  = $_POST['customerID']
+$enteredCode = $_POST['enteredCode'];
+$voucherID   = $_POST['voucherID'];
 
-    $uniquecode = rand(100000, 999999);
-
-    $db->where('phone', $phoneNumber);
-    $customer = $db->getOne('user_info'); 
-
-    if($customer){
-        $data_to_insert = [
-            'voucher_id' => $voucherId,
-            'vouchers_code' => $uniquecode,
-        ];
-        $db->where('phone', $phoneNumber);
-        $last_id = $db->update('user_info', $data_to_insert);
-        if ($last_id) {
-            echo json_encode(['success' => true, 'redeem_code' => $uniquecode]);
-        } else {
-            echo json_encode(['success' => false, 'message' => 'Failed to save data.']);
-        }
-    } else {
-        echo json_encode(['success' => false, 'message' => 'Phone number not found.']);
-    }
+if (!$voucherID || !$enteredCode || !$customerID) {
+    echo json_encode(['success' => false, 'message' => 'Invalid request. Missing parameters.']);
+    exit;
 }
 
+$db = getDbInstance();
 
+$db->where('coupon_code', $enteredCode);
+$codedata = $db->getOne('coupen_codes')
+
+if (!$codeData) {
+    echo json_encode(['success' => false, 'message' => 'Invalid coupon code.']);
+    exit;
+}
+
+if (!empty($codeData['coupon_id'])) {
+    echo json_encode(['success' => false, 'message' => 'This coupon code has already been redeemed.']);
+    exit;
+}
+
+$expiryDate = date('Y-m-d H:i:s', strtotime('+30 days'));
+
+$updateData = [
+    'customer_id' => $customerID,
+    'coupon_id' => $voucherID,
+    'expiry_date' => $expiryDate
+];
+
+$db->where('coupon_code', $enteredCode);
+$updated = $db->update('coupen_codes', $updateData);
+
+if ($updated) {
+    echo json_encode([
+        'success' => true,
+        'message' => 'Coupon code redeemed successfully!',
+        'expiry_date' => $expiryDate
+    ]);
+} else {
+    echo json_encode([
+        'success' => false,
+        'message' => 'Failed to redeem the coupon code. Please try again.'
+    ]);
+}
+exit;
 
 
 ?>

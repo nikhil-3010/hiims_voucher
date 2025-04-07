@@ -1,5 +1,4 @@
 <?php
-// session_start();
 require_once 'config/config.php';
 $token = bin2hex(openssl_random_pseudo_bytes(16));
 
@@ -32,7 +31,6 @@ if (isset($_COOKIE['series_id']) && isset($_COOKIE['remember_token']))
 			{
 				// Remember Cookie has expired. 
 				clearAuthCookie();
-				echo print_r("sjdhvf");die;
 				header('Location:login.php');
 				exit;
 			}
