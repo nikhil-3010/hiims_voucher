@@ -6,8 +6,17 @@
         </div> 
 
         <div class="form-group">
-            <label for="l_name">Voucher para pic *</label>
+            <label for="l_name">Voucher para pic  *</label>
             <input type="file" name="voucher_para_pic" class="form-control" required="required" id="para_pic">
+        </div> 
+        <div class="form-group">
+            <label for="f_name">Voucher photo (Hindi)*</label>
+            <input type="file" name="voucher_photo_hindi" class="form-control" required="required" id="voucher_pic">
+        </div>
+
+        <div class="form-group">
+            <label for="l_name">Voucher para pic (Hindi) *</label>
+            <input type="file" name="voucher_para_pic_hindi" class="form-control" id="para_pic">
         </div> 
        
 

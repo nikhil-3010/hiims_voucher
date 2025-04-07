@@ -34,13 +34,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
 
-    
+    if (isset($_FILES['voucher_photo_hindi']) && $_FILES['voucher_photo_hindi']['error'] === UPLOAD_ERR_OK) {
+        $file_name2 = basename($_FILES['voucher_photo_hindi']['name']);
+        $para_pic_path = $upload_dir . $file_name1;  // Corrected variable ($file_name1)
+        move_uploaded_file($_FILES['voucher_photo_hindi']['tmp_name'], $para_pic_path);
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Error uploading para picture.']);
+        exit();
+    }
 
     // Prepare data for database insertion
     $db = getDbInstance();
     $data_to_store = array_filter($_POST);
     $data_to_store['voucher_photo'] = $file_name;        // Ensure column matches DB
     $data_to_store['voucher_para_pic'] = $file_name1;
+    $data_to_store['voucher_photo_hin'] = $file_name2;  
+    $data_to_store['voucher_para_pic_hin'] = $file_name1;
+
     $data_to_store['created_at'] = date('Y-m-d');
     $data_to_store['expiry_date'] = date('Y-m-d', strtotime('+30 days', strtotime($data_to_store['created_at'])));
 

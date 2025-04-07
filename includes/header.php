@@ -80,7 +80,7 @@
                                     <a href="admin.php"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                                 </li>
 
-                                <li <?php echo (CURRENT_PAGE == "customers.php" || CURRENT_PAGE == "add_customer.php") ? 'class="active"' : ''; ?>>
+                                <li <?php echo (CURRENT_PAGE == "customers.php" || CURRENT_PAGE == "add_customer.php"||CURRENT_PAGE == "coupon_code.php") ? 'class="active"' : ''; ?>>
                                     <a href="#"><i class="fa fa-user-circle fa-fw"></i> Customers<span class="fa arrow"></span></a>
                                     <ul class="nav nav-second-level">
                                         <li>
@@ -88,6 +88,9 @@
                                         </li>
                                     <li>
                                         <a href="add_customer.php"><i class="fa fa-plus fa-fw"></i>Add New</a>
+                                    </li>
+                                    <li>
+                                        <a href="coupon_code.php"><i class="fa fa-plus fa-fw"></i>Coupon code</a>
                                     </li>
                                     </ul>
                                 </li>
