@@ -31,7 +31,7 @@ if (!$order_by) {
 
 // Get DB instance (i.e., instance of MYSQLiDB Library)
 $db = getDbInstance();
-$select = array('id', 'voucher_photo', 'voucher_para_pic','voucher_photo_hin', 'voucher_para_pic_hin','qr_code', 'expiry_date', 'created_at');
+$select = array('id', 'voucher_photo', 'voucher_para_pic','voucher_photo_hin', 'voucher_para_pic_hin','qr_code', 'created_at');
 
 // Fetch data from the `customer_vouchers` table
 $rows = $db->arraybuilder()->get('customer_vouchers', null, $select);
@@ -91,8 +91,6 @@ include BASE_PATH . '/includes/header.php';
                 <th width="30%">Voucher Photo(hindi)</th>
                 <th width="20%">Voucher Para Pic (hindi)</th>
                 <th width="20%">QR Code</th>
-                <th width="15%">Expiry Date</th>
-                <th width="10%">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -114,11 +112,8 @@ include BASE_PATH . '/includes/header.php';
         </button>
     </td>
 
-    <td><?php echo xss_clean($row['expiry_date']); ?></td>
     <td>
-        <a href="edit_customer.php?customer_id=<?php echo $row['id']; ?>&operation=edit" class="btn btn-primary">
-            <i class="glyphicon glyphicon-edit"></i>
-        </a>
+        
         <a href="#" class="btn btn-danger delete_btn" data-toggle="modal" data-target="#confirm-delete-<?php echo $row['id']; ?>">
             <i class="glyphicon glyphicon-trash"></i>
         </a>

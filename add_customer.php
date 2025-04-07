@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data_to_store['voucher_para_pic_hin'] = $file_name1;
 
     $data_to_store['created_at'] = date('Y-m-d');
-    $data_to_store['expiry_date'] = date('Y-m-d', strtotime('+30 days', strtotime($data_to_store['created_at'])));
+    // $data_to_store['expiry_date'] = date('Y-m-d', strtotime('+30 days', strtotime($data_to_store['created_at'])));
 
     // Generate a Unique QR Code Value and Save it in the DB
     $qr_code_value = uniqid('voucher_', true);  // Generate unique identifier

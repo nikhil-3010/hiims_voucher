@@ -95,7 +95,7 @@
                                     </ul>
                                 </li>
                                 <li>
-                                    <!-- <a href="admin_users.php"><i class="fa fa-users fa-fw"></i> Users</a> -->
+                                    <a href="#"><i class="fa fa-users fa-fw"></i>Whatsapp Groups</a>
                                 </li>
                             </ul>
                         </div>
