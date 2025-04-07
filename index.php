@@ -15,7 +15,7 @@ if (!isset($_SESSION['language'])) {
 
 
 $selectedLanguage = $_SESSION['language'];
-// print_r($selectedLanguage);
+//   print_r($selectedLanguage);
 
 
 include BASE_PATH.'/includes/header.php';
