@@ -61,13 +61,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $tmp = "1707172967245948300";
     $msg = "Hi your OTP for SHUDDHI is only valid for 10 minutes " . $otp . ". TEAM SHUDDHI";
 
-    sendsmsmsg($phoneNumber, $sender, $tmp, $msg);
+    // sendsmsmsg($phoneNumber, $sender, $tmp, $msg);
 
     // Return JSON response
     echo json_encode([
         "success" => true,
         "message" => "OTP sent successfully!",
-        // "otp" => $otp  
+        "otp" => $otp  
     ]);
 } else {
     echo json_encode([
