@@ -12,8 +12,8 @@ $offset = ($page - 1) * $limit;
 // Get total number of records
 $total = $DB->getValue("
     coupen_codes c 
-    JOIN customer_vouchers v ON c.coupon_id = v.id 
-    JOIN user_info u ON c.customer_id = u.id
+    LEFT JOIN customer_vouchers v ON c.coupon_id = v.id 
+    LEFT JOIN user_info u ON c.customer_id = u.id
 ", "count(*)");
 
 // Set page limit
@@ -22,8 +22,8 @@ $DB->pageLimit = $limit;
 // Fetch paginated coupon data with required columns
 $coupons = $DB->arraybuilder()->paginate("
     coupen_codes c 
-    JOIN customer_vouchers v ON c.coupon_id = v.id 
-    JOIN user_info u ON c.customer_id = u.id
+    LEFT JOIN customer_vouchers v ON c.coupon_id = v.id 
+    LEFT JOIN user_info u ON c.customer_id = u.id
 ", $page, "
     c.expiry_date, 
     c.coupon_code, 
@@ -38,38 +38,37 @@ $coupons = $DB->arraybuilder()->paginate("
 $total_pages = ceil($total / $limit);
 ?>
 
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <style>
-        body {
-            background-color: #f8f9fa;
-        }
-        .coupon-container {
-            background: #ffffff;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-        }
-        h2 {
-            font-weight: 600;
-            color: #343a40;
-        }
-        .table th {
-            background-color: #0d6efd;
-            color: white;
-        }
-        .no-records {
-            font-size: 1.2rem;
-            color: #dc3545;
-        }
-        .pagination {
-            justify-content: center;
-        }
-        img.voucher-img {
-            max-height: 50px;
-        }
-    </style>
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+    .coupon-container {
+        background: #ffffff;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+    h2 {
+        font-weight: 600;
+        color: #343a40;
+    }
+    .table th {
+        background-color: #0d6efd;
+        color: white;
+    }
+    .no-records {
+        font-size: 1.2rem;
+        color: #dc3545;
+    }
+    .pagination {
+        justify-content: center;
+    }
+    img.voucher-img {
+        max-height: 50px;
+    }
+</style>
 </head>
 <body>
 <div class="container my-5">
@@ -94,28 +93,32 @@ $total_pages = ceil($total / $limit);
                     <tbody>
                         <?php foreach ($coupons as $row): ?>
                             <tr>
-                            <td><?= htmlspecialchars($row['expiry_date'] ?? '') ?></td>
-                                <td><?= htmlspecialchars($row['coupon_code']); ?></td>
-                                <td><?= htmlspecialchars($row['coupan_id']); ?></td>
+                                <td><?= htmlspecialchars($row['expiry_date'] ?? '') ?></td>
+                                <td><?= htmlspecialchars($row['coupon_code'] ?? '') ?></td>
+                                <td><?= htmlspecialchars($row['coupan_id'] ?? 'N/A') ?></td>
                                 <td>
                                     <?php if (!empty($row['voucher_photo'])): ?>
-                                        <img src="./assets/images/<?= htmlspecialchars($row['voucher_photo'] ?? '') ?>" alt="Photo" class="voucher-img">
-
+                                        <img src="./assets/images/<?= htmlspecialchars($row['voucher_photo']) ?>" alt="Photo" class="voucher-img">
+                                    <?php else: ?>
+                                        N/A
                                     <?php endif; ?>
                                 </td>
                                 <td>
                                     <?php if (!empty($row['voucher_para_pic'])): ?>
-                                        <img src="./assets/images/<?= htmlspecialchars($row['voucher_para_pic'] ?? '') ?>" alt="Photo" class="voucher-img">
-
+                                        <img src="./assets/images/<?= htmlspecialchars($row['voucher_para_pic']) ?>" alt="Photo" class="voucher-img">
+                                    <?php else: ?>
+                                        N/A
                                     <?php endif; ?>
                                 </td>
                                 <td>
                                     <?php if (!empty($row['qr_code'])): ?>
-                                        <img src="<?= htmlspecialchars($row['qr_code']); ?>" alt="QR Code" class="voucher-img">
+                                        <img src="<?= htmlspecialchars($row['qr_code']) ?>" alt="QR Code" class="voucher-img">
+                                    <?php else: ?>
+                                        N/A
                                     <?php endif; ?>
                                 </td>
-                                <td><?= htmlspecialchars($row['customer_id']); ?></td>
-                                <td><?= htmlspecialchars($row['name']); ?></td>
+                                <td><?= htmlspecialchars($row['customer_id'] ?? 'N/A') ?></td>
+                                <td><?= htmlspecialchars($row['name'] ?? 'N/A') ?></td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
