@@ -31,7 +31,7 @@ if (!$order_by) {
 
 // Get DB instance (i.e., instance of MYSQLiDB Library)
 $db = getDbInstance();
-$select = array('id', 'voucher_photo', 'voucher_para_pic', 'qr_code', 'expiry_date', 'created_at');
+$select = array('id', 'voucher_photo', 'voucher_para_pic','voucher_photo_hin', 'voucher_para_pic_hin','qr_code', 'expiry_date', 'created_at');
 
 // Fetch data from the `customer_vouchers` table
 $rows = $db->arraybuilder()->get('customer_vouchers', null, $select);
@@ -88,6 +88,8 @@ include BASE_PATH . '/includes/header.php';
                 <th width="5%">ID</th>
                 <th width="30%">Voucher Photo</th>
                 <th width="20%">Voucher Para Pic</th>
+                <th width="30%">Voucher Photo(hindi)</th>
+                <th width="20%">Voucher Para Pic (hindi)</th>
                 <th width="20%">QR Code</th>
                 <th width="15%">Expiry Date</th>
                 <th width="10%">Actions</th>
@@ -100,6 +102,8 @@ include BASE_PATH . '/includes/header.php';
     <td><?php echo $row['id']; ?></td>
     <td><?php echo xss_clean($row['voucher_photo']); ?></td>
     <td><?php echo xss_clean($row['voucher_para_pic']); ?></td>
+    <td><?php echo xss_clean($row['voucher_photo_hin']); ?></td>
+    <td><?php echo xss_clean($row['voucher_para_pic_hin']); ?></td>
 
     <!-- Display QR Code Image -->
     <td>
