@@ -1,28 +1,45 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
- function setLanguage(lang) {
-   
+        function setLanguage(lang) {
             sessionStorage.setItem('language', lang);
+            globalThis.lang = lang;
+
+            if (lang == 'Hindi'){
+                $('.hin').show();
+                $('.hin input, .hin btn').prop('disabled', false);
+                $('.eng').hide();
+                $('.eng input, .eng btn').prop('disabled', true);
+            }
+            else if (lang == 'English'){
+                $('.eng').show();
+                $('.eng input, .eng btn').prop('disabled', false);
+                $('.hin').hide();
+                $('.hin input, .hin btn').prop('disabled', true);
+            }
+                       
             $('#language-selection').fadeOut(500, function() {
-                    // $('#voucher-section').fadeIn(500);
-                    $('#phone-number-section').fadeIn(500);
-                });
-           
-            // $('#phone-number-section').show();
+            $('#phone-number-section').fadeIn(500);
+            });
         }
                
         $(document).ready(function () {
             if(sessionStorage.getItem('language') && sessionStorage.getItem('phoneNumber') ) {
-            $('#language-selection').fadeOut(500, function() {
-                $('#voucher-section').fadeIn(500);
-            });
+            // $('#language-selection').fadeOut(500, function() {
+            //     $('#voucher-section').fadeIn(500);
+            // });
+            
             loadVouchers();
-        }
+            }
 
             $('#otpForm').on('submit', function (e) {
                 e.preventDefault();
-                const phoneNumber = $('#phoneNumber').val().trim();
+                var phoneNumber;
+                if(lang == 'English'){
+                phoneNumber = $('#phoneNumber').val().trim();}
+                else{
+                phoneNumber = $('#hphoneNumber').val().trim();
+                }
                 sessionStorage.setItem('phoneNumber', phoneNumber);
 
                 if (phoneNumber.length !== 10) {
@@ -138,8 +155,10 @@ function loadVouchers() {
 
                         const hasRedeemCode = redeemCode && voucher.voucher_id == redeemCode.coupon_id; 
 
+                        const wlang = sessionStorage.getItem('language');
 
-                        voucherHTML += `
+                        if(wlang == 'English'){
+                            voucherHTML += `
                             <li data-voucher-image="${voucher.voucher_para_image}" 
                             data-voucher-id="${voucher.voucher_id}"
                             data-expiry-date="${hasRedeemCode ? redeemCode.expiry_date : ''}"
@@ -150,8 +169,21 @@ function loadVouchers() {
                                     alt="${voucher.voucher_id}" 
                                     class="img-fluid">
                             </a>
-                        </li>
+                            </li>
                         `;
+                        }else if(wlang == 'Hindi'){
+                            voucherHTML += `
+                            <li data-voucher-image="${voucher.voucher_para_image_hin}" 
+                            data-voucher-id="${voucher.voucher_id}"
+                            data-expiry-date="${hasRedeemCode ? redeemCode.expiry_date : ''}"
+                            data-voucher-code="${hasRedeemCode ? redeemCode.coupon_code : ''}"
+                            data-cust-id="${customer.id}">
+                            <a href="#">
+                                <img src="./assets/images/${voucher.voucher_image_hin}" 
+                                    alt="${voucher.voucher_id}" 
+                                    class="img-fluid">
+                            </a>
+                            </li>`;}
                     });
 
                     $('#voucher-list').html(voucherHTML);
@@ -161,7 +193,10 @@ function loadVouchers() {
                         });
                     
                 } else {
-                    $('#responseMessage').html('<div class="alert alert-danger">' + res.message + '</div>');
+                    $('#voucher-section').hide()
+                        $('#language-selection').fadeIn(500);
+                        
+                    // $('#responseMessage').html('<div class="alert alert-danger">' + res.message + '</div>');
                 }
             } catch (error) {
                 console.error('Error parsing JSON from choose_voucher.php:', error);

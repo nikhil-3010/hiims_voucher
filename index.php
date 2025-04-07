@@ -74,19 +74,26 @@ include BASE_PATH.'/includes/coupon_header.php';
             </div>
             <div class="splash-areaa">
                 <div class="container-fluid">
-            <div class="splash-content pt-3">
-                <h2 class="sign-in-text text-center">Sign In</h2>
+            <div class="splash-content pt-3 ">
+                <h2 class="eng sign-in-text text-center">Sign In</h2>
+                <h2 class="hin sign-in-text text-center">साइन इन करें</h2>
                 <form  id="otpForm" >
-                    <div class="mb-3">
+                    <div class="eng mb-3">
                         <label for="exampleInputEmail1" class="form-label">Phone Number</label>
                         <input type="telephone" class="form-control" name="phoneNumber"  id="phoneNumber" aria-describedby="emailHelp" placeholder="Enter Phone Number" minlength="10" maxlength="10" required>
                       </div>
-                      <div class="button-area text-center mt-3">
+                      <div class="hin mb-3" >
+                        <label for="exampleInputEmail1" class="form-label">फ़ोन नंबर</label>
+                        <input type="telephone" class="form-control" name="phoneNumber"  id="hphoneNumber" aria-describedby="emailHelp" placeholder="फ़ोन नंबर दर्ज करें" minlength="10" maxlength="10" required>
+                      </div>
+                      <div class="eng button-area text-center mt-3">
                           <button type="submit" class="btn btns-lang my-2" >Get OTP</button>
                         </div>
-                    </form>
-
-                     
+                        
+                      <div class="hin button-area text-center mt-3">
+                          <button type="submit" class="btn btns-lang my-2" >OTP प्रापत करें</button>
+                        </div>
+                    </form>         
             </div>
             </div>
         </div>
@@ -99,36 +106,57 @@ include BASE_PATH.'/includes/coupon_header.php';
             </div>
                 <div class="content-body mt-4 p-3">
                     <div class="container-fluid">
-                        <h3 class="text-center">Please enter your <br>general information &<br> address</h3>
+                    <h3 class="eng text-center">Please enter your <br>general information &<br> address</h3>
+                        <h3 class="hin text-center">120+ आयुर्वेदिक क्लीनिक और अस्पताल कृपया अपनी <br>जानकारी और पता दर्ज करें
+                        </h3>
                         <form>
-                            <div class="mb-3">
+                        <div class="eng mb-3">
                                 <label for="exampleInputEmail1" class="form-label">Name</label>
                                 <input type="name" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter name">
                               </div>
-                              <div class="mb-3">
+                              <div class="hin mb-3">
+                                <label for="exampleInputEmail1" class="form-label">नाम</label>
+                                <input type="name" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="नाम दर्ज करें">
+                              </div>
+                              <div class="eng mb-3">
                                 <label for="exampleInputEmail1" class="form-label">Phone Number</label>
                                 <input type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Phone Number">
                               </div>
-                              <div class="mb-3">
+                              <div class="hin mb-3">
+                                <label for="exampleInputEmail1" class="form-label">फ़ोन नंबर</label>
+                                <input type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="फ़ोन नंबर दर्ज करें">
+                              </div>
+                              <div class="eng mb-3">
                                 <label for="exampleInputEmail1" class="form-label">Email</label>
                                 <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Email">
                               </div>
-                              <div class="mb-3">
+                              <div class="hin mb-3">
+                                <label for="exampleInputEmail1" class="form-label">ईमेल (वैकल्पिक)</label>
+                                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="ईमेल दर्ज करें">
+                              </div>
+                              <div class="eng mb-3">
                                 <label for="exampleInputEmail1" class="form-label">Pin code</label>
                                 <input type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Pin code">
                               </div>
-                            <button type="submit" class="btn btn-custom voucher w-100">Get Your Voucher</button>
+                              <div class="hin mb-3">
+                                <label for="exampleInputEmail1" class="form-label">पिन कोड (वैकल्पिक)</label>
+                                <input type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="पिन कोड दर्ज करें">
+                              </div>
+                            <button type="submit" class="eng btn btn-custom voucher w-100">Get Your Voucher</button>  
+                            <button type="submit" class="hin btn btn-custom voucher w-100">अपना वाउचर प्राप्त करें </button>
                         </form>
                         <div class="info mt-3">
                             <img src="./assets/images/Mask group (2).png" alt="more information" class="more-info">
                         </div>
                     </div>
+
                 </div>
             </div>
             <div class="splash-area">
             <div class="splash-content text-center pt-3">
                 <img src="./assets/images/final_jeena_sikho_logo 1.png" alt="splash-logo" class="spalsh-img img-fluid">
-                <p class="otp-text mt-4">We have sent one time password on<br> your mobile please enter bellow</p>
+                <p class="eng otp-text mt-4">We have sent one time password on<br> your mobile please enter bellow</p>
+                <p class="hin otp-text mt-4" style="display:none;">हमने आपके मोबाइल पर एक ओटीपी भेजा है,<br> कृपया नीचे दर्ज करें</p>
                 <div class="text-center">
                     <div class="otp-container">
                     <input type="text" maxlength="1" class="otp-input" id="otp1">
@@ -139,6 +167,7 @@ include BASE_PATH.'/includes/coupon_header.php';
                 </div>
                 <div class="button-area mt-3">
                     <button class="btn btn-langs my-2" id="verifyOtpBtn">Verify</button>
+                    
                 </div>
             </div>
         </div>
@@ -153,24 +182,39 @@ include BASE_PATH.'/includes/coupon_header.php';
         </div>
         <div class="content-body mt-4 p-3">
             <div class="container-fluid">
-                <h2 class="text-center">Please enter your <br>general information &<br> address</h2>
+                <h2 class="eng text-center">Please enter your <br>general information &<br> address</h2>
+                <h2 class="hin text-center">120+ आयुर्वेदिक क्लीनिक और अस्पताल कृपया अपनी <br>जानकारी और पता दर्ज करें</h2>
+
                 <form id="info-form">
-                    <div class="mb-3">
+                    <div class="eng mb-3">
                         <label for="infoname" class="form-label">Name</label>
                         <input type="text" class="form-control" name="name" id="infoname" placeholder="Enter Name">
+                    </div>
+                    <div class="hin mb-3">
+                        <label for="infoname" class="form-label">नाम</label>
+                        <input type="text" class="form-control" name="name" id="infoname" placeholder="नाम दर्ज करें">
                     </div>
                     <div class="mb-3">
                         <label for="infophone" class="form-label">Phone Number</label>
                         <input type="text" class="form-control" name="phone" id="infophone" >
                     </div>
+                    
                     <div id="responseMessage" style="color: red; text-align: center;"></div>
-                    <div class="mb-3">
+                    <div class="eng mb-3">
                         <label for="infoemail" class="form-label">Email</label>
                         <input type="email" class="form-control" name="email" id="infoemail" placeholder="Enter Email">
                     </div>
-                    <div class="mb-3">
+                    <div class="hin mb-3">
+                        <label for="infoemail" class="form-label">ईमेल (वैकल्पिक)</label>
+                        <input type="email" class="form-control" name="email" id="infoemail" placeholder="ईमेल दर्ज करें">
+                    </div>
+                    <div class="eng mb-3">
                         <label for="infopincode" class="form-label">Pin code</label>
                         <input type="number" class="form-control" name="pincode" id="infopincode" placeholder="Enter Pincode" min="000001" max="999999">
+                    </div>
+                    <div class="hin mb-3">
+                        <label for="infopincode" class="form-label">पिन कोड (वैकल्पिक)</label>
+                        <input type="number" class="form-control" name="pincode" id="infopincode" placeholder="पिन कोड दर्ज करें" min="000001" max="999999">
                     </div>
                     <button type="submit" class="btn btn-custom vouchers w-100">Get Your Voucher</button>
                 </form>

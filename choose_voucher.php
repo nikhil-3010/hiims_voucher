@@ -32,7 +32,9 @@ foreach ($vouchers as $voucher) {
     $voucherList[] = [
         'voucher_id' => $voucher['id'],
         'voucher_image' => $voucher['voucher_photo'],
-        'voucher_para_image' => $voucher['voucher_para_pic']
+        'voucher_para_image' => $voucher['voucher_para_pic'],
+        'voucher_image_hin' => $voucher['voucher_photo_hin'],
+        'voucher_para_image_hin' => $voucher['voucher_para_pic_hin'],
     ];
 }
 
