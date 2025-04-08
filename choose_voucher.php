@@ -19,9 +19,9 @@ if (!$customer) {
     exit;
 }
 
-$code = $customer['vouchers_code'];
+$code = $customer['id'];
 
-$redeemcode = $db->where('coupon_code', $code)->getOne('coupen_codes', 
+$redeemcode = $db->where('customer_id', $code)->getOne('coupen_codes', 
 ['coupon_id','customer_id','coupon_code','expiry_date']);
 
 // Fetch available vouchers

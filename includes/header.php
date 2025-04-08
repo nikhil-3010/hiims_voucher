@@ -95,7 +95,7 @@
                                     </ul>
                                 </li>
                                 <li>
-                                    <a href="#"><i class="fa fa-users fa-fw"></i>Whatsapp Groups</a>
+                                    <a href="add_whastapplink.php"><i class="fa fa-users fa-fw"></i>Whatsapp Groups</a>
                                 </li>
                             </ul>
                         </div>

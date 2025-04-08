@@ -4,8 +4,8 @@ require_once './config/config.php';  // Ensure this contains your database conne
 
 $response = ['success' => false, 'data' => []];
 
-if (isset($_SESSION['phoneNumber'])) {
-    $phoneNumber = $_SESSION['phoneNumber'];
+if (isset($_POST['phoneNumber'])) {
+    $phoneNumber = $_POST['phoneNumber'];
 
     $db = getDbInstance(); 
     $db->where('phone', $phoneNumber);

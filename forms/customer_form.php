@@ -1,4 +1,4 @@
-<form action="upload.php" method="POST" enctype="multipart/form-data">
+
     <fieldset>
         <div class="form-group">
             <label for="f_name">Voucher photo *</label>
@@ -25,5 +25,5 @@
             <button type="submit" class="btn btn-warning">Save <span class="glyphicon glyphicon-send"></span></button>
         </div>            
     </fieldset>
-</form>
+
 

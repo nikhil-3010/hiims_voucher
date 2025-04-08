@@ -98,10 +98,10 @@ include BASE_PATH . '/includes/header.php';
 
                 <tr>
     <td><?php echo $row['id']; ?></td>
-    <td><?php echo xss_clean($row['voucher_photo']); ?></td>
-    <td><?php echo xss_clean($row['voucher_para_pic']); ?></td>
-    <td><?php echo xss_clean($row['voucher_photo_hin']); ?></td>
-    <td><?php echo xss_clean($row['voucher_para_pic_hin']); ?></td>
+    <td><img id="<?php echo $row['id']; ?>" src="./assets/images/<?php echo $row['voucher_photo']; ?>"  width="" height="50"></td>
+    <td><img id="<?php echo $row['id']; ?>" src="./assets/images/<?php echo $row['voucher_para_pic']; ?>"  width="150" height="200"></td>
+    <td><img id="<?php echo $row['id']; ?>" src="./assets/images/<?php echo $row['voucher_photo_hin']; ?>"  width="" height="50"></td>
+    <td><img id="<?php echo $row['id']; ?>" src="./assets/images/<?php echo $row['voucher_para_pic_hin']; ?>"  width="150" height="200"></td>
 
     <!-- Display QR Code Image -->
     <td>

@@ -24,13 +24,44 @@
         }
                
         $(document).ready(function () {
-            if(sessionStorage.getItem('language') && sessionStorage.getItem('phoneNumber') ) {
-            // $('#language-selection').fadeOut(500, function() {
-            //     $('#voucher-section').fadeIn(500);
-            // });
             
-            loadVouchers();
+            const isVerified = sessionStorage.getItem('verified');
+            const islang = sessionStorage.getItem('language');
+
+            if (!isVerified || isVerified !== 'true') {
+                sessionStorage.removeItem('phoneNumber');
+                console.log('Phone number removed from sessionStorage — user not verified.');
+            }else if(isVerified == 'true'){                
+                    setLanguage(islang)
+                    const phoneNumber = sessionStorage.getItem('phoneNumber');
+                $('#language-selection').fadeOut(500, function() {
+                    $('#phone-number-section').hide();
+                    $.ajax({
+                    url: 'fetch_users.php',
+                    method: 'POST',
+                    data: { phoneNumber: phoneNumber },
+                    success: function(response) {
+                        const res = JSON.parse(response);
+                        if (res.success) {
+                            const userInfo = res.data;
+                            $('#infoname').val(userInfo.name);
+                            $('#infoemail').val(userInfo.email);
+                            $('#infopincode').val(userInfo.pincode);
+                            $('#infophone').val(sessionStorage.getItem('phoneNumber'));
+
+                            loadVouchers();
+                            
+                        }else {
+                            
+                            $('#form-section').fadeIn(500);
+                        }
+                    }
+                });
+                    
+                });
             }
+            
+
 
             $('#otpForm').on('submit', function (e) {
                 e.preventDefault();
@@ -84,9 +115,12 @@
                     success: function (res) {
                         
                             if (res.success) {
-                                $.ajax({
+                                sessionStorage.setItem('verified', true);
+                                const phoneNumber = sessionStorage.getItem('phoneNumber');
+                $.ajax({
                     url: 'fetch_users.php',
                     method: 'POST',
+                    data: { phoneNumber: phoneNumber },
                     success: function(response) {
                         const res = JSON.parse(response);
                         if (res.success) {
@@ -99,6 +133,7 @@
                             
                             $('#otp-section').fadeOut(500, function() {
                         $('#form-section').fadeIn(500);
+                        
                         });
                         }else {
             $('#responseMessage').text('User data not found. Please try again.');
@@ -133,8 +168,21 @@
                     })
                 });
 
+            $('.infoimage').on('click', function(e){
+                e.preventDefault();
+                
+                $('#form-section').fadeOut(500, function() {
+                    $('#voucher-section').fadeOut(500);
+                    $('#whatsapp-section').fadeIn(500);
+                });
+            });
+
+            
+
+
+
         
-function loadVouchers() {
+    function loadVouchers() {
     $.ajax({
         url: 'choose_voucher.php',
         method: 'POST',
@@ -286,6 +334,31 @@ function loadVouchers() {
                 });
             });
 
+$('#joinwhatsapp').click(function(e) {
+    $.ajax({
+        url: 'choose_wlink.php',
+        method: 'POST',
+        success: function(response) {
+            try {
+                if (response.success) {
+                    // Do something with the link, e.g., open in new tab
+                    window.open(response.link, '_blank');
+
+                    $('#whatsapp-section').fadeOut(500, function() {
+                        $('#form-section').fadeIn(500);
+                    });
+                } else {
+                    alert(response.message || 'No link found.');
+                }
+            } catch (error) {
+                console.error('Error parsing JSON from choose_wlink.php:', error);
+            }
+        },
+        error: function() {
+            alert('Failed to load link. Please try again.');
+        }
+    });
+});
             // Handle input focus for OTP boxes
             $('.otp-input').on('input', function () {
                 if (this.value.length === 1) {

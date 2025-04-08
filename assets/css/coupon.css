@@ -1,4 +1,11 @@
 ul li{list-style: none;}
+input::placeholder {
+    color: rgb(0, 0, 0) !important;
+  }
+
+.form-control{
+    background-color: #ffff !important;
+}
 ul{padding-left: 0;}
 .content-boxs .content-body{background-color: #0B6C4B;border-top-left-radius: 30px;border-top-right-radius: 30px;color: white;height: 600px;}
 .content-boxs .content-body form .form-control{border-radius: 30px;background-color: #3C896F;}
@@ -16,6 +23,8 @@ ul{padding-left: 0;}
             text-align: center;
             font-size: 16px;
         }
+
+
         .otp-text{color: #717171;font-size: 18px;}
         .otp-input {
             width: 60px;

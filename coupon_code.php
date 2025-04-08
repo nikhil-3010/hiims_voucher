@@ -9,6 +9,13 @@ $limit = 10;
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int) $_GET['page'] : 1;
 $offset = ($page - 1) * $limit;
 
+$search = isset($_GET['search']) ? trim($_GET['search']) : '';
+$DB->where('1=1'); // Always true condition to allow chaining
+
+if ($search) {
+    $DB->where("(u.name LIKE ? OR u.phone LIKE ? OR c.coupon_code LIKE ?)", ["%$search%", "%$search%", "%$search%"]);
+}
+
 // Get total number of records
 $total = $DB->getValue("
     coupen_codes c 
@@ -18,6 +25,11 @@ $total = $DB->getValue("
 
 // Set page limit
 $DB->pageLimit = $limit;
+
+$DB->where('1=1'); // Again needed for paginate
+if ($search) {
+    $DB->where("(u.name LIKE ? OR u.phone LIKE ? OR c.coupon_code LIKE ?)", ["%$search%", "%$search%", "%$search%"]);
+}
 
 // Fetch paginated coupon data with required columns
 $coupons = $DB->arraybuilder()->paginate("
@@ -32,10 +44,13 @@ $coupons = $DB->arraybuilder()->paginate("
     v.voucher_para_pic, 
     v.qr_code, 
     u.id as customer_id, 
-    u.name
+    u.name,
+    u.phone
 ");
 
 $total_pages = ceil($total / $limit);
+
+
 ?>
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -73,52 +88,57 @@ $total_pages = ceil($total / $limit);
 <body>
 <div class="container my-5">
     <div class="coupon-container">
+    <a href="admin.php" class="btn btn-secondary mb-3">← Back</a>
         <h2 class="text-center mb-4">🎟️ Available Coupon Codes</h2>
+
+<form method="GET" class="row g-2 mb-3">
+    <div class="col-md-4">
+        <input type="text" name="search" class="form-control" placeholder="Search by name, phone, or code" value="<?= htmlspecialchars($_GET['search'] ?? '') ?>">
+    </div>
+    <div class="col-md-auto">
+        <button type="submit" class="btn btn-primary">Search</button>
+        <!-- <a href="coupon_list.php" class="btn btn-outline-secondary">Reset</a> -->
+    </div>
+</form>
 
         <?php if (!empty($coupons)): ?>
             <div class="table-responsive">
                 <table class="table table-bordered table-hover text-center align-middle">
                     <thead>
                         <tr>
-                            <th>Expiry Date</th>
-                            <th>Coupon Code</th>
-                            <th>Coupon ID</th>
-                            <th>Voucher Photo</th>
-                            <th>Voucher Para Pic</th>
-                            <th>QR Code</th>
-                            <th>Customer ID</th>
+                            <th>S. No.</th>
                             <th>Customer Name</th>
+                            <th>Customer Phone No.</th>
+                            <th>Coupon Code</th>
+                            <th>Voucher Photo</th>
+                            <th>QR Code</th>
+                            <th>Expiry Date</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($coupons as $row): ?>
+                        <?php $i = 1; foreach ($coupons as $row): ?>
                             <tr>
-                                <td><?= htmlspecialchars($row['expiry_date'] ?? '') ?></td>
+                            <td><?= $i++ ?></td>
+                                <td><?= htmlspecialchars($row['name'] ?? '') ?></td>
+                                <td><?= htmlspecialchars($row['phone'] ?? '') ?></td>
                                 <td><?= htmlspecialchars($row['coupon_code'] ?? '') ?></td>
-                                <td><?= htmlspecialchars($row['coupan_id'] ?? 'N/A') ?></td>
                                 <td>
                                     <?php if (!empty($row['voucher_photo'])): ?>
                                         <img src="./assets/images/<?= htmlspecialchars($row['voucher_photo']) ?>" alt="Photo" class="voucher-img">
-                                    <?php else: ?>
-                                        N/A
-                                    <?php endif; ?>
-                                </td>
-                                <td>
-                                    <?php if (!empty($row['voucher_para_pic'])): ?>
-                                        <img src="./assets/images/<?= htmlspecialchars($row['voucher_para_pic']) ?>" alt="Photo" class="voucher-img">
-                                    <?php else: ?>
-                                        N/A
-                                    <?php endif; ?>
-                                </td>
-                                <td>
-                                    <?php if (!empty($row['qr_code'])): ?>
-                                        <img src="<?= htmlspecialchars($row['qr_code']) ?>" alt="QR Code" class="voucher-img">
-                                    <?php else: ?>
-                                        N/A
-                                    <?php endif; ?>
-                                </td>
-                                <td><?= htmlspecialchars($row['customer_id'] ?? 'N/A') ?></td>
-                                <td><?= htmlspecialchars($row['name'] ?? 'N/A') ?></td>
+                                        <?php else: ?>
+                                            N/A
+                                            <?php endif; ?>
+                                        </td>
+                                       
+                                                <td>
+                                                    <?php if (!empty($row['qr_code'])): ?>
+                                                        <img src="<?= htmlspecialchars($row['qr_code']) ?>" alt="QR Code" class="voucher-img">
+                                                        <?php else: ?>
+                                                            N/A
+                                                            <?php endif; ?>
+                                                        </td>
+                                                        
+                                <td><?= htmlspecialchars($row['expiry_date'] ?? '') ?></td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>

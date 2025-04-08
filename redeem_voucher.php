@@ -3,7 +3,7 @@ session_start();
 
 require_once './config/config.php';  
 
-$customerID  = $_POST['customerID']
+$customerID  = $_POST['customerID'];
 $enteredCode = $_POST['enteredCode'];
 $voucherID   = $_POST['voucherID'];
 
@@ -15,7 +15,7 @@ if (!$voucherID || !$enteredCode || !$customerID) {
 $db = getDbInstance();
 
 $db->where('coupon_code', $enteredCode);
-$codedata = $db->getOne('coupen_codes')
+$codeData = $db->getOne('coupen_codes');
 
 if (!$codeData) {
     echo json_encode(['success' => false, 'message' => 'Invalid coupon code.']);
@@ -37,6 +37,7 @@ $updateData = [
 
 $db->where('coupon_code', $enteredCode);
 $updated = $db->update('coupen_codes', $updateData);
+
 
 if ($updated) {
     echo json_encode([

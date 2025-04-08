@@ -45,7 +45,7 @@ include BASE_PATH.'/includes/coupon_header.php';
                               </div>
                             <button type="submit" class="btn btn-custom voucher w-100">Get Your Voucher</button>
                         </form>
-                        <div class="info mt-3">
+                        <div class="info mt-3" style="width: 30%;">
                             <img src="./assets/images/Mask group (2).png" alt="more information" class="more-info img-fluid">
                         </div>
                     </div>
@@ -196,7 +196,7 @@ include BASE_PATH.'/includes/coupon_header.php';
                     </div>
                     <div class="mb-3">
                         <label for="infophone" class="form-label">Phone Number</label>
-                        <input type="text" class="form-control" name="phone" id="infophone" >
+                        <input type="text" class="form-control" name="phone" id="infophone" readonly>
                     </div>
                     
                     <div id="responseMessage" style="color: red; text-align: center;"></div>
@@ -218,7 +218,7 @@ include BASE_PATH.'/includes/coupon_header.php';
                     </div>
                     <button type="submit" class="btn btn-custom vouchers w-100">Get Your Voucher</button>
                 </form>
-                <div class="info mt-3">
+                <div class="info mt-3 infoimage" >
                     <img src="./assets/images/Mask group (2).png" alt="more information" class="more-info img-fluid">
                 </div>
             </div>
@@ -227,8 +227,6 @@ include BASE_PATH.'/includes/coupon_header.php';
 </section>
 
 <!-- choose voucher -->
-
-
    <section class="d-md-none" id="voucher-section" style="display:none;">
     <div class="choose-voucher-area ">
         <div class="container-fluid">
@@ -238,6 +236,9 @@ include BASE_PATH.'/includes/coupon_header.php';
                    
                 </ul>
             </div>
+            <div class="info mt-3 infoimage" >
+                    <img src="./assets/images/Mask group (2).png" alt="more information" class="more-info img-fluid">
+                </div>
         </div>
     </div>
    </section>
@@ -260,7 +261,26 @@ include BASE_PATH.'/includes/coupon_header.php';
     </div>
    </section>
 
-
+   <section class="d-md-none" id="whatsapp-section" style="display:none;">
+            <div class="content-boxs mt-3 mb-3">
+                <div class="text-center">
+                <img src="./assets/images/final_jeena_sikho_logo 1.png" alt="logo" class="logo-img img-fluid">
+            </div>
+                <div class="content-body mt-4 p-3">
+                    <div class="container-fluid">
+                        <p class="eng text-center pt-2">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec posuere faucibus tincidunt. Vivamus egestas rutrum leo, non fringilla erat egestas id.<br><br>Nulla congue lorem accumsan commodo aliquam. Integer gravida auctor eros quis luctus. Ut at mauris nec nisi viverra ultrices. Sed in posuere massa. Integer iaculis lectus in rhoncus pretium. Proin quis quam congue, egestas enim quis, fringilla libero. Aenean suscipit elementum nulla.</p>
+                        <p class="hin text-center pt-2">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec posuere faucibus tincidunt. Vivamus egestas rutrum leo, non fringilla erat egestas id.<br><br>Nulla congue lorem accumsan commodo aliquam. Integer gravida auctor eros quis luctus. Ut at mauris nec nisi viverra ultrices. Sed in posuere massa. Integer iaculis lectus in rhoncus pretium. Proin quis quam congue, egestas enim quis, fringilla libero. Aenean suscipit elementum nulla.</p>
+                    <h3 class="eng text-center pt-3">Do you want to adapt Ayurveda in your life via Acharya ji's guidance?<br><br>
+                        Then click here to join in the Whatsapp group.</h3>
+                    <h3 class="hin text-center pt-3">क्या आप आचार्य जी के मार्गदर्शन से अपने जीवन में आयुर्वेद को अपनाना चाहते हैं?<br><br>
+                    तो यहां क्लिक करें और व्हाट्सएप ग्रुप से जुड़ें</h3>
+                        <div class="text-center pt-2">
+                        <button class="btn btn-lang my-2" id="joinwhatsapp">Join</button>
+                    </div>
+                    </div>
+                </div>
+            </div>
+    </section>
 
 
 </body>
